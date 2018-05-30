@@ -14,11 +14,12 @@ if (isset($_REQUEST['op']) && $_REQUEST['op'] == 'logout') {
 }
 if (isset($_REQUEST['op']) && $_REQUEST['op'] == 'login') {
     if (isset($_POST['username']) && !empty($_POST['username']) && !empty($_POST['password'])) {
-        if ($_POST['username'] == 'test' && $_POST['password'] == 'test') {
+        if ($_POST['username'] == 'awery' && $_POST['password'] == 'heppy101') {
             $_SESSION['user_id'] = 1;
             $_SESSION['timeout'] = time();
             $_SESSION['username'] = 'admin';
-
+            header("Location: index.php");
+ die;
 
         } else {
             $msg = 'Wrong username or password';
@@ -40,7 +41,6 @@ if (!empty($_SESSION['user_id'])) {
             if (isset( $_REQUEST['id'])){
                 $idBugs=(int) $_REQUEST['id'];
 
-                print 'YES';
                if ($idBugs>0) {
                    $sqlresolved='UPDATE `bugs` SET `resolved`=1,`resolved_date`=NOW() WHERE id='.$idBugs;
                    db_query($sqlresolved);
