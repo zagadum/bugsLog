@@ -1,4 +1,7 @@
-
+<style>
+    .red {background-color: pink !important;}
+.green {background-color: #c9e2b3 !important;}
+</style>
   <!-- Content -->
         <section class="content">
             <div class="top-bar results clearfix">
@@ -33,19 +36,34 @@
 
         </section>
       <script>
+
+          function isResolved(id){
+
+              if (confirm("is Resolved?")){
+                  $.get( "?op=is-resolve&json=1&id="+id, function( data ) {
+
+                      $('#info_tbl').DataTable().ajax.reload();
+
+                  });
+
+              }
+
+
+          }
           $(document).ready(function(){
 
-              var info_table = $('#info_tbl').dataTable({
+              var   info_table = $('#info_tbl').dataTable({
+                  "pageLength": 100,
                   "processing": true,
                   "serverSide": true,
                   "infoCallback": function( settings, start, end, max, total, pre ) {
-                      $('#paging_info').text(start + ' - ' + end + ' OF ' + total);
+                      $('#paging_info').text(start + ' - ' + end + ' Total: ' + total);
                   },
                   "dom": '<"top"ip>rt<"bottom"><"clear">',
                   "ajax": {
                       "url": "index.php",
                       "type": "POST",
-                      "data": { "search": " search_str ","json":1,'op':'bug_details' }
+                      "data": { "search": " search_str ","json":1,'op':'bugs_list' }
                   },
                   "columns": [
                       { data: "id" },
@@ -55,19 +73,32 @@
                       { data: "bugs_cnt" },
                       { data: "last_host" },
                       { data: "resolved" },
+
                       { data: "resolved_date" },
                       { data: "error_text" },
-
-                      { data: "(opt2)", "class": "min-width" },
+                       { data: "(opt2)", "class": "min-width" },
                   ],
                   "columnDefs": [
                       {
                           "targets": -1,
                           "data": "(opt2)",
-                          "render": function(data, type, row) {
-                              return '<a href="' + 'json/' + row['id']
+                          "render": function(data, type, row,meta) {
+                              var rowIndex = meta.row+1;
+
+                              var isResolveBtn='';
+                              if (row['resolved']==0) {
+                                  var isResolveBtn='<a  class="btn isResolve" onclick="isResolved('+row['id']+');" >Is Resolved</a>';
+                              }else{
+                                if (row['is_red']==1){
+                                    $('#info_tbl tbody tr:nth-child('+rowIndex+')').addClass('red');
+                                }else{
+                                    $('#info_tbl tbody tr:nth-child('+rowIndex+')').addClass('green');
+                                }
+
+                              }
+                              return isResolveBtn+'<a href="' + '?op=bugs_details&id=' + row['id']
                               + '" class="btn btn-secondary btn-sm" style="margin-left:18px;">Details</a>'
-                              + '<a href="' + 'json' + '/' + row['id']
+                              + '<a href="' + '?op=bugs_details' + '&id=' + row['id']
                               + '" class="btn btn-secondary btn-sm btn-icon" style="margin-left:18px;">'
                               + '<span class="icon-arrow-forward"></span></a>';
                           },
@@ -86,6 +117,8 @@
                   e.preventDefault();
                   info_table.fnPageChange('next');
               });
+
+
 
           });
       </script>

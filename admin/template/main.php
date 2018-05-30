@@ -23,7 +23,7 @@
 
                 <div class="pull-left">
                     <a href="/admin/" class="btn btn-default" type="button"><span class="icon-home"></span></a>
-                    <button class="btn btn-default disabled" type="button"><span class="icon-arrow-back"></span></button>
+                    <button class="btn btn-default  " type="button" onclick="history.back(1);"><span class="icon-arrow-back"></span></button>
                 </div>
 
                 <div class="pull-right">

@@ -33,33 +33,87 @@ if (empty($_SESSION['user_id'])) {
 //--- Login Area
 if (!empty($_SESSION['user_id'])) {
 
+    //print_r($_REQUEST);die;
 //---------- Json
     if (isset($_REQUEST['json'])) {
+        if ($_REQUEST['op']=='is-resolve'){
+            if (isset( $_REQUEST['id'])){
+                $idBugs=(int) $_REQUEST['id'];
+
+                print 'YES';
+               if ($idBugs>0) {
+                   $sqlresolved='UPDATE `bugs` SET `resolved`=1,`resolved_date`=NOW() WHERE id='.$idBugs;
+                   db_query($sqlresolved);
+               }
+            }
+            die;
+            }
+
+
+
+
         $search_arr = array();
         if (isset($_REQUEST['search'])) {
             $search_arr = $_REQUEST['search'];
         }
         $results = array();
         $offset = !empty($_REQUEST['start']) ? $_REQUEST['start'] : 0;
-        $length = !empty($_REQUEST['length']) ? $_REQUEST['length'] : 0;
+        $length = !empty($_REQUEST['length']) ? $_REQUEST['length'] : 10;
         $search_str = (!empty($search_arr['value'])) ?: $search_arr;
-        $sqlCount = 'SELECT count(*) as total FROM `bugs` ';
-        $rsCnt = db_query($sqlCount);
-        $rowTotal = db_fetch($rsCnt);
-        $total = $rowTotal['total'];
-        $sql = 'SELECT * FROM `bugs` ORDER BY las_seen DESC';
-        $rs = db_query($sql);
-        while ($row = db_fetch($rs)) {
-            $results[] = $row;
-        }
-        $ret = array(
+
+        if ($_REQUEST['op']=='bugs_list'){
+            $sqlCount = 'SELECT count(*) as total FROM `bugs` ';
+            $rsCnt = db_query($sqlCount);
+            $rowTotal = db_fetch($rsCnt);
+            $total = $rowTotal['total'];
+            $sql = 'SELECT * FROM `bugs` ORDER BY las_seen DESC LIMIT '.$offset.', '.$length;
+            $rs = db_query($sql);
+            while ($row = db_fetch($rs)) {
+                $row['is_red']=0;
+                if ($row['resolved']==1){
+                    if (strtotime($row['las_seen'])>strtotime($row['resolved_date'] )){
+                        $row['is_red']=1;
+                    }
+                }
+                $results[] = $row;
+            }
+            $ret = array(
 //            'draw' => 1,
-            'recordsTotal' => $total,
-            'recordsFiltered' => $total,
-            'data' => $results
-        );
-        print json_encode($ret);
-        die;
+                'recordsTotal' => $total,
+                'recordsFiltered' => $total,
+                'data' => $results
+            );
+            print json_encode($ret);
+            die;
+        }
+        if ($_REQUEST['op']=='bugs_details'){
+            $idBugs=0;
+            if (isset($_REQUEST['id'])){
+                $idBugs=(int)$_REQUEST['id'];
+            }
+            $sqlCount = 'SELECT count(*) as total FROM `bugs_details` WHERE bug_id='.$idBugs;
+            $rsCnt = db_query($sqlCount);
+            $rowTotal = db_fetch($rsCnt);
+            $total = $rowTotal['total'];
+            $sql = 'SELECT * FROM `bugs_details`  WHERE bug_id='.$idBugs.' ORDER BY error_time DESC LIMIT '.$offset.','.$length;
+            $rs = db_query($sql);
+            while ($row = db_fetch($rs)) {
+                $results[] = $row;
+
+            }
+
+            $ret = array(
+//            'draw' => 1,
+                'recordsTotal' => $total,
+                'recordsFiltered' => $total,
+                'data' => $results,
+                'sql'=>$sql
+            );
+            print json_encode($ret);
+            die;
+        }
+
+
     }
 
 
@@ -68,9 +122,15 @@ if (!empty($_SESSION['user_id'])) {
     $view->body = "Hi, sup";
     $view->content = "Hi, sup";
 */
+if (empty($_REQUEST['op']) || isset($_REQUEST['op']) && $_REQUEST['op']=='bugs_list'){
+        $view->content = $view->render('template/bug_list.php');
+}
 
-    $view->content = $view->render('template/bug_list.php');
 
+ if (isset($_REQUEST['op']) && $_REQUEST['op']=='bugs_details'){
+
+     $view->content = $view->render('template/bug_details.php');
+    }
     print  $view->render('template/main.php');
     die;
 }
