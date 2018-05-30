@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/select2.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="main">
+        <header class="header">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">
+                    <img src="images/logo_small.svg" alt="logo" width="131" height="16">
+                </a>
+
+                <div class="pull-left">
+                    <button class="btn btn-default" type="button"><span class="icon-home"></span></button>
+                    <button class="btn btn-default disabled" type="button"><span class="icon-arrow-back"></span></button>
+                </div>
+
+                <div class="pull-right">
+                    <span class="user-name">Admin</span>
+
+                    <div class="dropdown pull-right">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="icon-menu"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <!-- <li><a href="#">User History</a></li>
+                            <li><a href="#">Configure</a></li> -->
+                            <li><a href="login.html" class="text-danger">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <section class="content">
+            
+
+            <div class="top-bar results clearfix">
+                <div class="pagination pull-right">
+                    <span class="icon-arrow-left disabled"></span>
+                    <span>1-10 <span>OF</span> 213</span>
+                    <span class="icon-arrow-right"></span>
+                </div>
+
+                <div class="absolute-center">
+                    <h3 class="text-center">Search Results</h3>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Record Number</th>
+                    <th>Suffix</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Sex</th>
+                    <th>Birthdate</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>RT54356554</td>
+                    <td>Mr</td>
+                    <td>Richard</td>
+                    <td>Smith</td>
+                    <td>M</td>
+                    <td>1/23/1980</td>
+                    <td class="min-width">
+                        <button class="btn btn-primary btn-sm">Select</button>
+                        <button class="btn btn-primary btn-sm btn-icon"><span class="icon-arrow-forward"></span></button>
+                    </td>
+                    <td class="min-width">
+                        <a href="edit-patient.html" class="btn btn-secondary btn-sm">Edit Patient</a>
+                        <a href="edit-patient.html" class="btn btn-secondary btn-sm btn-icon"><span class="icon-mode-edit"></span></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>RE5348838</td>
+                    <td>Ms</td>
+                    <td>Lindsey</td>
+                    <td>Smith</td>
+                    <td>F</td>
+                    <td>10/8/1987</td>
+                    <td class="min-width">
+                        <button class="btn btn-primary btn-sm">Select</button>
+                        <button class="btn btn-primary btn-sm btn-icon"><span class="icon-arrow-forward"></span></button>
+                    </td>
+                    <td class="min-width">
+                        <a href="edit-patient.html" class="btn btn-secondary btn-sm">Edit Patient</a>
+                        <a href="edit-patient.html" class="btn btn-secondary btn-sm btn-icon"><span class="icon-mode-edit"></span></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>SN8369285</td>
+                    <td>Ms</td>
+                    <td>Miranda</td>
+                    <td>Smith</td>
+                    <td>F</td>
+                    <td>5/16/1985</td>
+                    <td class="min-width">
+                        <button class="btn btn-primary btn-sm">Select</button>
+                        <button class="btn btn-primary btn-sm btn-icon"><span class="icon-arrow-forward"></span></button>
+                    </td>
+                    <td class="min-width">
+                        <a href="edit-patient.html" class="btn btn-secondary btn-sm">Edit Patient</a>
+                        <a href="edit-patient.html" class="btn btn-secondary btn-sm btn-icon"><span class="icon-mode-edit"></span></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+
+        </section>
+    </div>
+
+    <footer class="footer">
+        <span class="copyright">© 2018 AWERY </span>
+    </footer>
+
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/select2.min.js"></script>
+    <script type="text/javascript">
+        $('.select').select2({
+            minimumResultsForSearch: -1
+        });
+    </script>
+</body>
+</html>

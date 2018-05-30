@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/select2.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="main">
+        <header class="header">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">
+                    <img src="images/logo-small.svg" alt="logo" width="131" height="16">
+                </a>
+
+                <div class="pull-left">
+                    <button class="btn btn-default" type="button"><span class="icon-home"></span></button>
+                    <button class="btn btn-default disabled" type="button"><span class="icon-arrow-back"></span></button>
+                </div>
+
+                <div class="pull-right">
+                    <span class="user-name">Martin Zintsler</span>
+
+                    <div class="dropdown pull-right">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="icon-menu"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="#">User History</a></li>
+                            <li><a href="#">Configure</a></li>
+                            <li><a href="login.html" class="text-danger">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <section class="content">
+            <div class="fluid-height">
+                <div class="fluid-height-left">
+                    <div class="dashed-section">
+                        <form class="dashed-section-inner form-horizontal">
+                            <h3>Add new user</h3>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label class="sr-only">E-mail</label>
+                                        <div class="col-xs-12">
+                                            <input class="form-control" placeholder="E-mail">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label class="sr-only">Title</label>
+                                        <div class="col-xs-12">
+                                            <select class="form-control select" data-placeholder="Title" style="width: 100%">
+                                                <option></option>
+                                                <option value="option1">option1</option>
+                                                <option value="option2">option2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label class="sr-only">First name</label>
+                                        <div class="col-xs-12">
+                                            <input class="form-control" placeholder="First name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label class="sr-only">Last name</label>
+                                        <div class="col-xs-12">
+                                            <input class="form-control" placeholder="Last name">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label class="sr-only">Password</label>
+                                        <div class="col-xs-12">
+                                            <input class="form-control" placeholder="Password" type="password">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label class="sr-only">Repeat password</label>
+                                        <div class="col-xs-12">
+                                            <input class="form-control" placeholder="Repeat password" type="password">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row checkbox-wrap">
+                                <div class="col-lg-3">
+                                    <div class="checkbox">
+                                        <input id="LTCversion" type="checkbox" name="check" value="LTCversion">
+                                        <label for="LTCversion">LTC version</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 text-center">
+                                    <div class="checkbox">
+                                        <input id="gradeVersion" type="checkbox" name="check" value="gradeVersion">
+                                        <label for="gradeVersion">Grade version</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 text-right">
+                                    <div class="checkbox">
+                                        <input id="adminRights" type="checkbox" name="check" value="adminRights">
+                                        <label for="adminRights">Administrative rights</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="btn-wrap">
+                                <button class="btn btn-primary" type="submit">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="fluid-height-right">
+                    <div class="dashed-section">
+                        <form class="dashed-section-inner form-horizontal">
+                            <h3>Search user</h3>
+                            <p class="lead text-center">Type user‘s First Name, Last Name and/or e-mail address<br>
+                                and press Search button</p>
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label class="sr-only">Search</label>
+                                        <div class="col-xs-12">
+                                            <input class="form-control" placeholder="Search">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="btn-wrap">
+                                <button class="btn btn-primary" type="submit">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+    <footer class="footer">
+        <span class="copyright">© 2018 AWERY &amp; </span>
+    </footer>
+
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/select2.min.js"></script>
+    <script type="text/javascript">
+        $('.select').select2({
+            minimumResultsForSearch: -1
+        });
+    </script>
+</body>
+</html>

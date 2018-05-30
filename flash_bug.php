@@ -1,6 +1,7 @@
 <?php
 include "./lib/config.php";
-
-LibLogs::save();
-print 'Done';
+include "./lib/classes/Db.php";
+DB_connect();
+$lastId=LibLogs::save();
+print 'Done ';
 ?>

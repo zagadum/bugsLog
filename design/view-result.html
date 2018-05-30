@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="main">
+        <header class="header">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">
+                    <img src="images/logo.png" alt="logo" width="131" height="16">
+                </a>
+
+                <div class="pull-left">
+                    <button class="btn btn-default" type="button"><span class="icon-home"></span></button>
+                    <button class="btn btn-default" type="button"><span class="icon-arrow-back"></span></button>
+                </div>
+
+                <div class="pull-right">
+                    <span class="user-name">Martin Zintsler</span>
+
+                    <div class="dropdown pull-right">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="icon-menu"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="#">User History</a></li>
+                            <li><a href="#">Configure</a></li>
+                            <li><a href="login.html" class="text-danger">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <section class="content">
+            <div class="text-center">
+                <h3>Patient: John Doe</h3>
+            </div>
+
+            <div class="dashed-section completed">
+                <div class="text-center">
+                    <h3><span class="icon-check-circle"></span> The Assessment is complete</h3>
+                </div>
+
+                <form class="dashed-section-inner form-horizontal">
+
+                    <div class="row">
+                        <div class="col-xs-9">
+                            <div class="form-group">
+                                <label class="col-xs-5 control-label">Stage:</label>
+                                <div class="col-xs-7">
+                                    <p class="form-control-static">Stage 4 Pressure Ulcer</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-5 control-label">Location:</label>
+                                <div class="col-xs-7">
+                                    <p class="form-control-static">Right Elbow</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-5 control-label">Diagnosis code:</label>
+                                <div class="col-xs-7">
+                                    <p class="form-control-static">L89.021</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-5 control-label">Assessment date:</label>
+                                <div class="col-xs-7">
+                                    <p class="form-control-static">8/1/2016</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-5 control-label">Wound status:</label>
+                                <div class="col-xs-7">
+                                    <p class="form-control-static">Closed</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-5 control-label">Wound condition:</label>
+                                <div class="col-xs-7">
+                                    <p class="form-control-static">Healed</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="photo-wrap">
+                                <!--<img id="uploadImg" src="images/no-photo.png" alt="">-->
+                                <img id="uploadImg" src="images/avatar.jpg" alt="">
+                                <input type="file" id="uploadme">
+                                <span class="close icon-close"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-wrap">
+                        <button class="btn btn-danger pull-left">Cancel</button>
+                        <button class="btn btn-secondary">Reject</button>
+                        <button class="btn btn-primary pull-right">Continue</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <span class="copyright">© 2018 AWERY &amp; </span>
+    </footer>
+
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function (){
+            /*uploader*/
+            $('#uploadImg').click(function(){
+                $('#uploadme').click();
+            });
+        });
+    </script>
+</body>
+</html>
