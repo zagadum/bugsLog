@@ -15,21 +15,57 @@
                     <h3 class="text-center">Bug List</h3>
                 </div>
             </div>
+            <div class="fluid-height-center">
+                <div class="dashed-section">
+                    <form class="dashed-section-inner form-horizontal">
+                        <h4>Search</h4>
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="form-group">
+                                    <label class="sr-only">First name</label>
+                                    <div class="col-xs-7">
+                                        <input class="form-control" placeholder="Search" value="">
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <input class="form-control" placeholder="Rev ID">
+                                    </div>
+                                </div>
 
+                            </div>
+
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <label class="sr-only">Type Code</label>
+                                    <div class="col-xs-5">
+                                        <select class="form-control select" data-placeholder="Sex" style="width: 100%">
+                                            <option value="">None</option>
+                                            <option value="swf">SWF</option>
+                                            <option value="php">PHP</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                                <input type="button"  class="btn btn-primary" value="Search"/>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
             <table id="info_tbl" class="table table-striped" width="100%" cellspacing="0">
                 <thead>
                 <tr>
                     <th>Id</th>
+                    <th width="15%">Last Seen</th>
+                    <th width="8%">Rev ID</th>
+                    <th width="5%">Type</th>
+                    <th width="15%">Bug Name </th>
+                    <th width="5%">Bugs Total</th>
+                    <th width="10%">Last Host</th>
 
-                    <th>Last Seen</th>
-                    <th>Type</th>
-                    <th>Bug Name</th>
-                    <th>Bugs Total</th>
-                    <th>Last Host</th>
-                    <th>Id Bug</th>
-                    <th>Is Resolved</th>
-                    <th>Resolved Date</th>
-                    <th>Error Text</th>
+
+                    <th width="10%">Resolved <br/>Date</th>
+                    <th width="30%">Error Text</th>
                     <th></th>
 
                 </tr>
@@ -61,26 +97,27 @@
                   "infoCallback": function( settings, start, end, max, total, pre ) {
                       $('#paging_info').text(start + ' - ' + end + ' Total: ' + total);
                   },
-                  "dom": '<"top"ip>rt<"bottom"><"clear">',
+                   "dom": '<"top"ip>rt<"bottom"><"clear">',
                   "ajax": {
                       "url": "index.php",
                       "type": "POST",
-                      "data": { "search": " search_str ","json":1,'op':'bugs_list' }
+                      "data": {       "json":1,'op':'bugs_list' }
                   },
                   "columns": [
                       { data: "id" },
 
                       { data: "las_seen" },
+                      { data: "rev_id" },
                       { data: "bug_type" },
                       { data: "bug_name" },
                       { data: "bugs_cnt" },
                       { data: "last_host" },
-                      { data: "last_host" },
-                      { data: "resolved" },
+
+                     // { data: "resolved" },
 
                       { data: "resolved_date" },
                       { data: "error_text" },
-                       { data: "(opt2)", "class": "min-width" },
+                      { data: "(opt2)", "class": "min-width" },
                   ],
                   "columnDefs": [
                       {
@@ -100,6 +137,7 @@
                                 }
 
                               }
+
                               return isResolveBtn+'<a href="' + '?op=bugs_details&id=' + row['id']
                               + '" class="btn btn-secondary btn-sm" style="margin-left:18px;">List Bugs</a>'
                               + '<a href="' + '?op=bugs_details' + '&id=' + row['id']
@@ -110,6 +148,7 @@
                       {
                           "targets": [ 0 ],
                           "visible": false,
+
                       }],
               });
 

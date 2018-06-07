@@ -704,7 +704,7 @@ input[type=radio]:checked + label:before {
 
 /* Questionary */
 .dashed-section{
-    max-width: 667px;
+
     padding: 10px 0;
     margin: 30px auto 20px;
     background-color: #e3f2fd;
@@ -758,11 +758,11 @@ input[type=radio]:checked + label:before {
 }
 
 .dashed-section-inner{
-    margin: 30px 30px 0;
+    margin: 8px 8px 0;
 }
 
 .completed .dashed-section-inner{
-    padding-top: 30px;
+    padding-top: 8px;
     border-top: 2px solid #2196f3;
 }
 
