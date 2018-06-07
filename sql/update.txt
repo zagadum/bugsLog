@@ -1,0 +1,11 @@
+ALTER TABLE `bugs`
+ADD COLUMN `rev_id`  char(10) NULL DEFAULT NULL AFTER `last_host`;
+
+
+ALTER TABLE `bugs`
+ADD COLUMN `source`  enum('php','swf','none') NULL DEFAULT NULL AFTER `bug_name`;
+
+
+ALTER TABLE `bugs`
+CHANGE COLUMN `source` `bug_type`  enum('php','swf','none') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `bug_name`;
+

@@ -22,9 +22,11 @@
                     <th>Id</th>
 
                     <th>Last Seen</th>
+                    <th>Type</th>
                     <th>Bug Name</th>
                     <th>Bugs Total</th>
                     <th>Last Host</th>
+                    <th>Id Bug</th>
                     <th>Is Resolved</th>
                     <th>Resolved Date</th>
                     <th>Error Text</th>
@@ -69,8 +71,10 @@
                       { data: "id" },
 
                       { data: "las_seen" },
+                      { data: "bug_type" },
                       { data: "bug_name" },
                       { data: "bugs_cnt" },
+                      { data: "last_host" },
                       { data: "last_host" },
                       { data: "resolved" },
 
@@ -97,7 +101,7 @@
 
                               }
                               return isResolveBtn+'<a href="' + '?op=bugs_details&id=' + row['id']
-                              + '" class="btn btn-secondary btn-sm" style="margin-left:18px;">Details</a>'
+                              + '" class="btn btn-secondary btn-sm" style="margin-left:18px;">List Bugs</a>'
                               + '<a href="' + '?op=bugs_details' + '&id=' + row['id']
                               + '" class="btn btn-secondary btn-sm btn-icon" style="margin-left:18px;">'
                               + '<span class="icon-arrow-forward"></span></a>';

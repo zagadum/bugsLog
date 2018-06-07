@@ -66,7 +66,7 @@ if (!empty($_SESSION['user_id'])) {
             $rsCnt = db_query($sqlCount);
             $rowTotal = db_fetch($rsCnt);
             $total = $rowTotal['total'];
-            $sql = 'SELECT * FROM `bugs` ORDER BY las_seen DESC LIMIT '.$offset.', '.$length;
+            $sql = 'SELECT `id`, `las_seen`, `bug_type` , `bug_name`,`bugs_cnt`, `last_host`,`rev_id`,  `resolved`, `resolved_date`, SUBSTRING(error_text FROM 1 FOR 100)  as error_text  FROM `bugs` ORDER BY las_seen DESC LIMIT '.$offset.', '.$length;
             $rs = db_query($sql);
             while ($row = db_fetch($rs)) {
                 $row['is_red']=0;
