@@ -704,8 +704,8 @@ input[type=radio]:checked + label:before {
 
 /* Questionary */
 .dashed-section{
-
-    padding: 10px 0;
+    width: 95%;
+    padding: 10px 10;
     margin: 30px auto 20px;
     background-color: #e3f2fd;
     border: 3px dashed #bf6a6aa6;
@@ -893,6 +893,7 @@ _:-ms-fullscreen,
 }
 
 .fluid-height .dashed-section{
+
     display: block;
     max-width: inherit;
     height: 100%;

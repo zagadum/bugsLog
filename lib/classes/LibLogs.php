@@ -36,7 +36,7 @@ class LibLogs
 
         $fields['fieldsBugsDetails'] = array();
         $bug_hash = 'none';
-        $BugName='';
+        $BugName = '';
         if (isset($_REQUEST['host'])) {
             $fields['fieldsBugsDetails']['host'] = DB_string($_REQUEST['host']);
             $fieldsBugs['last_host'] = DB_string($_REQUEST['host']);
@@ -94,15 +94,20 @@ class LibLogs
 
         //--- BugName
         if (isset($_REQUEST['module'])) {
-            $BugName = ' '.  $_REQUEST['module'];
+            $BugName = ' ' . $_REQUEST['module'];
         }
         if (isset($_REQUEST['opened_tab'])) {
-            $BugName .=' '. $_REQUEST['opened_tab'];
-    }
+            $BugName .= ' ' . $_REQUEST['opened_tab'];
+        }
+
+        $fieldsBugs['bug_type'] = 'swf';
+        if (stripos($fieldsBugs['error_text'], 'source') !== false) {
+            $fieldsBugs['bug_type'] = 'php';
+        }
 //--------- Analise Bugs Dictonary begin
         $rowBugs = self::GetBagsRow($bug_hash);
         if (empty($rowBugs['id'])) {
-            $fieldsBugs['bug_name']=DB_string(trim($BugName));
+            $fieldsBugs['bug_name'] = DB_string(trim($BugName));
             $rowBugs['id'] = self::saveBags($fieldsBugs);
         }
         if (!empty($rowBugs['id'])) {
@@ -124,6 +129,10 @@ class LibLogs
             $ins_sql = 'INSERT INTO `bugs_details` (' . implode(',', $fieldsSave) . ') VALUES (' . implode(',', $valueSave) . ')';
             $rs = db_query($ins_sql);
 
+            if (!empty($fieldsBugs['last_host'])) {
+                $ins_sqlHost = 'INSERT IGNORE INTO `bugs_details` (host) VALUES("' . $fieldsBugs['last_host'] . '")';
+                db_query($ins_sqlHost);
+            }
         }
         self::SeBagsCount($bug_hash);
 
@@ -162,7 +171,6 @@ class LibLogs
         $upd = 'Update `bugs` SET  `bugs_cnt`=(SELECT count(`bug_id`) from `bugs_details` WHERE `bugs`.id=`bugs_details`.bug_id)  WHERE `bug_hash`=' . "'" . $bug_hash . "'";
         $rs = db_query($upd);
     }
-
 
 
     function Update($orderId, $upFields)

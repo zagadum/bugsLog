@@ -51,7 +51,9 @@ function DB_close()
 function DB_string($sql)
 {
     global $conn_DB;
-
+if (empty($conn_DB)){
+    DB_connect();
+}
     return mysqli_real_escape_string($conn_DB, $sql);
 }
 

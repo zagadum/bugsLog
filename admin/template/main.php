@@ -6,13 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/select2.min.css" rel="stylesheet">
 
     <link href="css/style.css" rel="stylesheet">
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/datatables-bs/js/jquery.dataTables.min.js"></script>
     <script src="js/datatables-bs/js/dataTables.bootstrap.min.js"></script>
-</head>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+    <script src="js/jquery.twbsPagination.min.js" type="text/javascript"></script>
+    </head>
 <body>
     <div class="main">
         <header class="header">
@@ -47,7 +50,12 @@
 
 
     </div>
-
+    <script src="js/select2.min.js"></script>
+    <script type="text/javascript">
+        $('.select').select2({
+            minimumResultsForSearch: -1
+        });
+    </script>
     <footer class="footer">
         <span class="copyright">© 2018 AWERY </span>
     </footer>
