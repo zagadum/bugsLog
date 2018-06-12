@@ -38,6 +38,13 @@ if (!empty($_SESSION['user_id'])) {
     if (isset($_REQUEST['searchField'])) {
         $_SESSION['filter']['searchField'] = $_REQUEST['searchField'];
     }
+    if (isset($_REQUEST['bug_name'])) {
+        $_SESSION['filter']['bug_name'] = $_REQUEST['bug_name'];
+    }
+
+    if (isset($_REQUEST['bug_users'])) {
+        $_SESSION['filter']['bug_users'] = $_REQUEST['bug_users'];
+    }
     if (isset($_REQUEST['typeCode'])) {
         if ($_REQUEST['typeCode']=='-'){
             unset(  $_SESSION['filter']['bug_type']);
@@ -49,7 +56,9 @@ if (!empty($_SESSION['user_id'])) {
     if (isset($_REQUEST['rev_id'])) {
         $_SESSION['filter']['rev_id'] = $_REQUEST['rev_id'];
     }
-
+    if (isset($_REQUEST['rule_id'])) {
+        $_SESSION['filter']['rule_id'] = $_REQUEST['rule_id'];
+    }
     if (isset($_REQUEST['host'])) {
         if ($_REQUEST['host']=='-'){
             unset(  $_SESSION['filter']['host']);
@@ -77,9 +86,9 @@ if (!empty($_SESSION['user_id'])) {
             if (isset($_REQUEST['id'])) {
                 $rev_id='';
                 $idBugs = (int)$_REQUEST['id'];
-                if (isset($_REQUEST['rev_id'])){
+                if (isset($_REQUEST['rev_id_save'])){
 
-                    $rev_id = DB_string($_REQUEST['rev_id']);
+                    $rev_id = DB_string($_REQUEST['rev_id_save']);
                 }
 
                 if ($idBugs > 0) {
@@ -104,6 +113,18 @@ if (!empty($_SESSION['user_id'])) {
             }
             die;
         }
+        if ($_REQUEST['op'] == 'is-remove-filter') {
+            if (isset($_REQUEST['id'])) {
+                $idFilter= (int)$_REQUEST['id'];
+
+                if ($idFilter > 0) {
+                    $sqlresolved = 'DELETE FROM  `bugs_filter`  WHERE id=' . $idFilter;
+                    $rs=db_query($sqlresolved);
+
+                }
+            }
+            die('OK');
+        }
 
 
         $search_arr = array();
@@ -117,7 +138,30 @@ if (!empty($_SESSION['user_id'])) {
             $offset =  (int)($_REQUEST['page']-1)*$length ;
         }
 
+        if ($_REQUEST['op'] == 'bugs_filter') {
 
+            $sqlCount = 'SELECT count(*) as total FROM  `bugs_filter` ';
+            $rsCnt = db_query($sqlCount);
+            $rowTotal = db_fetch($rsCnt);
+            $total = $rowTotal['total'];
+
+            $sql = 'SELECT  *  FROM `bugs_filter`  ORDER BY id DESC LIMIT ' . $offset . ', ' . $length;
+            $rs = db_query($sql);
+            while ($row = db_fetch($rs)) {
+                $results[] = $row;
+            }
+
+            $ret = array(
+
+                'recordsTotal' => $total,
+                'recordsFiltered' => $total,
+
+                'TotalPages'=>floor($total/$length),
+                'data' => $results
+            );
+            print json_encode($ret);
+            die;
+        }
 
         if ($_REQUEST['op'] == 'bugs_list') {
             $sqlCount = 'SELECT count(*) as total FROM `bugs` ';
@@ -126,7 +170,7 @@ if (!empty($_SESSION['user_id'])) {
             $total = $rowTotal['total'];
             $addWhere = '';
             if (!empty($_SESSION['filter']['searchField'])) {
-                $search = $_SESSION['filter']['searchField'];
+                $search = trim($_SESSION['filter']['searchField']);
                 $addWhere .= ' AND (`bug_name` LIKE "%' . DB_string($search) . '%" or `last_host` LIKE "%' . DB_string($search) . '%"  OR error_text LIKE "%' . DB_string($search) . '%" )  ';
             }
             if (!empty($_SESSION['filter']['rev_id'])) {
@@ -135,16 +179,26 @@ if (!empty($_SESSION['user_id'])) {
             if (!empty($_SESSION['filter']['bug_type'])) {
                 $addWhere .= ' AND `bug_type`="' . DB_string($_SESSION['filter']['bug_type']) . '"';
             }
-
+            if (!empty($_SESSION['filter']['bug_name'])) {
+                $addWhere .= ' AND `bug_name`="' . DB_string($_SESSION['filter']['bug_name']) . '"';
+            }
             if (!empty($_SESSION['filter']['host'])) {
                 $addWhere .= ' AND `last_host` LIKE "%' . DB_string($_SESSION['filter']['host']) . '%"';
             }
+            if (!empty($_SESSION['filter']['bug_users'])) {
+                $addWhere .= ' AND `bug_users` LIKE "%' . DB_string($_SESSION['filter']['bug_users']) . '%"';
+            }
+            if (!empty($_SESSION['filter']['rule_id'])) {
+                $addWhere .= ' AND `rule_id`= ' . (int)$_SESSION['filter']['rule_id'] ;
+            }else{
+                $addWhere .= ' AND `rule_id`=0';
+            }
 
-            $sqlTotal = 'SELECT count(`id`) as cnt   FROM `bugs` WHERE id>0  ' . $addWhere . ' ORDER BY las_seen DESC LIMIT ' . $offset . ', ' . $length;
+            $sqlTotal = 'SELECT count(`id`) as cnt   FROM `bugs` WHERE id>0 ' . $addWhere . ' ORDER BY las_seen DESC LIMIT ' . $offset . ', ' . $length;
             $rsCnt = db_query($sqlTotal);
             $rowTotalFilter = db_fetch($rsCnt);
             $total = $rowTotal['total'];
-            $sql = 'SELECT `id`, `las_seen`, `bug_type` , `bug_name`,`bugs_cnt`, `last_host`,`rev_id`,  `resolved`, `resolved_date`, SUBSTRING(error_text FROM 1 FOR 200)  as error_text  FROM `bugs` WHERE id>0  ' . $addWhere . ' ORDER BY las_seen DESC LIMIT ' . $offset . ', ' . $length;
+            $sql = 'SELECT `id`, `las_seen`, `bug_type` , `bug_name`,`bugs_cnt`,  `bug_users`, `last_host`,`rev_id`,  `resolved`, `resolved_date`, SUBSTRING(error_text FROM 1 FOR 200)  as error_text  FROM `bugs` WHERE id>0   ' . $addWhere . ' ORDER BY las_seen DESC LIMIT ' . $offset . ', ' . $length;
             $rs = db_query($sql);
             while ($row = db_fetch($rs)) {
                 $row['is_red'] = 0;
@@ -207,8 +261,6 @@ if (!empty($_SESSION['user_id'])) {
         $sql = 'SELECT  *  FROM `bugs_host`  ORDER BY host';
         $rs = db_query($sql);
         while ($rowHost = db_fetch($rs)) {
-
-
             $hostList[] = $rowHost['host'];
         }
         $view->hostList = $hostList;
@@ -217,8 +269,20 @@ if (!empty($_SESSION['user_id'])) {
 
 
     if (isset($_REQUEST['op']) && $_REQUEST['op'] == 'bugs_details') {
-
         $view->content = $view->render('template/bug_details.php');
+    }
+
+    if (isset($_REQUEST['op']) && $_REQUEST['op'] == 'bugs_filter') {
+       // bugs_filter
+        if (isset($_REQUEST['saveFilter'])){
+            $id_rule=LibLogs::saveFilter($_REQUEST['FilterAdd']);
+            $applyFilter=LibLogs::applyOneFilter($id_rule);
+
+            $view->applyFilter =$applyFilter;
+            $view->rule_id =$id_rule;
+        }
+            //saveFilter
+        $view->content = $view->render('template/bug_filter.php');
     }
     print  $view->render('template/main.php');
     die;

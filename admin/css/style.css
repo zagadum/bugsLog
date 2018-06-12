@@ -207,7 +207,7 @@ a,
     top: 0;
     right: 0;
     bottom: 124px;*/
-    padding: 82px 0 52px;
+    padding: 40px 0 52px;
     /*overflow-y: auto;*/
 }
 
@@ -758,7 +758,7 @@ input[type=radio]:checked + label:before {
 }
 
 .dashed-section-inner{
-    margin: 8px 8px 0;
+    margin: 8px 8px 15px;
 }
 
 .completed .dashed-section-inner{

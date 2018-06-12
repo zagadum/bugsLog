@@ -10,111 +10,113 @@
 <!-- Content -->
 <section class="content">
     <div class="top-bar results clearfix">
-        <div class="pagination pull-right">
-            <span id="prev_page" class="icon-arrow-left"></span>
-            <span id="paging_info"></span>
-            <span id="next_page" class="icon-arrow-right"></span>
-        </div>
 
-        <div class="absolute-center">
-            <h3 class="text-center">Bug List</h3>
-        </div>
+
+
     </div>
     <div class="fluid-height-center">
+
         <div class="dashed-section">
             <form id="searchForm" action="index.php" class="dashed-section-inner form-horizontal">
 
                 <h4>Search</h4>
-
                 <div class="row">
-                    <div class="col-xs-4">
-                        <div class="form-group">
+                    <div class="col-sm-3" style="width: 12%">
+                        <input id="searchField" name="searchField" class="form-control" placeholder="Search"
+                                                 value="<?= @$filter['searchField'] ?>">
+                    </div>
+                    <div class="col-sm-3" style="width: 12%">
+                    <input id="bug_name" name="bug_name" class="form-control" placeholder=" Search Module"
+                           value="<?= @$filter['bug_name'] ?>">
+                    </div>
+                    <div class="col-sm-3" style="width: 12%">
+                        <input id="bug_users" name="bug_users" class="form-control" placeholder=" Search User"
+                               value="<?= @$filter['bug_users'] ?>">
+                    </div>
+                    <div class="col-sm-2" style="width: 10%"> <input id="rev_id" name="rev_id" class="form-control" placeholder="Rev ID"
+                        value="<?= @$filter['rev_id'] ?>"></div>
+                    <div class="col-sm-3" style="width: 17%">
+                        <select id="typeCode" name="host" class="form-control select"
+                                data-placeholder="select Host" placeholder="select Host"
+                                style="width: 100%">
+                            <option value="-">All</option>
+                            <?php foreach ($hostList as $id => $host) :
+                                $sel = '';
+                                if ($filter['host'] == $host) {
+                                    $sel = 'selected="selected"';
+                                }
+                                ?>
+                                <option value="<?= $host ?>" <?= $sel ?>><?= $host; ?></option>
 
-                            <div class="col-xs-7">
-                                <input id="searchField" name="searchField" class="form-control" placeholder="Search"
-                                       value="<?= @$filter['searchField'] ?>">
-                            </div>
-                            <div class="col-xs-5">
-                                <input id="rev_id" name="rev_id" class="form-control" placeholder="Rev ID"
-                                       value="<?= @$filter['rev_id'] ?>">
-                            </div>
-                        </div>
+                            <?php endforeach; ?>
+                        </select>
 
                     </div>
-                    <div class="col-xs-4">
-                        <div >
-                            <label class="sr-only">Host</label>
-                            <div class="col-xs-6">
-                                <select id="typeCode" name="host" class="form-control select"
-                                        data-placeholder="select Host" placeholder="select Host"
-                                        style="width: 100%">
-                                    <option value="-">All</option>
-                                    <?php foreach ($hostList as $id => $host) :
-                                        $sel = '';
-                                        if ($filter['host'] == $host) {
-                                            $sel = 'selected="selected"';
-                                        }
-                                        ?>
-                                        <option value="<?= $host ?>" <?= $sel ?>><?= $host; ?></option>
+                    <div class="col-sm-2"  style="width: 10%">
+                        <select id="typeCode" name="typeCode" class="form-control select"
+                                data-placeholder="Type"
+                                 >
+                            <option value="-">All</option>
+                            <?php
+                            $listType = array('' => 'None', 'php' => 'PHP', 'swf' => 'SWF');
+                            foreach ($listType as $k => $val) {
+                                $sel = '';
+                                if ($filter['bug_type'] == $k) {
+                                    $sel = 'selected="selected"';
+                                }
+                                print ' <option value="' . $k . '" ' . $sel . '>' . $val . '</option>';
+                            }
+                            ?>
 
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
+
+                        </select>
+
                     </div>
-                    <div class="col-sm-3">
-                        <div >
-                            <label class="sr-only">Type Code</label>
-                            <div class="col-xs-5">
-                                <select id="typeCode" name="typeCode" class="form-control select"
-                                        data-placeholder="Type"
-                                        style="width: 100%">
-                                    <option value="-">All</option>
-                                    <?php
-                                    $listType = array('' => 'None', 'php' => 'PHP', 'swf' => 'SWF');
-                                    foreach ($listType as $k => $val) {
-                                        $sel = '';
-                                        if ($filter['bug_type'] == $k) {
-                                            $sel = 'selected="selected"';
-                                        }
-                                        print ' <option value="' . $k . '" ' . $sel . '>' . $val . '</option>';
-                                    }
-                                    ?>
+                    <div class="col-sm-3"> <input type="submit" class="btn btn-primary" value="Search"  /></div>
 
-
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <input type="submit" class="btn btn-primary" value="Search"  />
-
+                    <div><br></div>
                 </div>
+                <?php
+                 if (isset($filter['rule_id']) && $filter['rule_id']>0){
+                     print '<div class="red">the filter includes ignored records</div>';
+                 }
+
+                ?>
+               <div class="pull-right"><a href="index.php?bug_name=&typeCode=&host=&rev_id=&rule_id=&bug_users=" >Reset Filter</a></div>
             </form>
         </div>
 
     </div>
     <nav aria-label="Page navigation">
         <ul class="pagination" id="pagination"></ul>
-    </nav>
+         <span id="paging_info" style="    margin-top: 14px;
+    position: relative;
+    display: block;
+    float: right; right: 40px;
+"></span>
+     </nav>
 
-    <table id="info_tbl" class="table  " width="100%" cellspacing="0">
+    <table id="info_tbl" class="table" width="100%" cellspacing="0">
         <thead>
         <tr>
 
-            <th width="15%">Last Seen</th>
-            <th width="8%">Rev ID</th>
-            <th width="5%">Type</th>
-            <th width="10%">Bugs Total</th>
+            <th width="5%">Last Seen</th>
+            <th width="2%">Rev ID</th>
+            <th width="1%">Type</th>
+            <th width="5%">User</th>
+            <th width="1%">Total</th>
             <th width="10%">Host</th>
-            <th width="15%">Resolved Date</th>
-            <th width="1%" colspan="2"></th>
+            <!-- <th width="15%">Resolved Date</th> -->
+            <th width="5%" colspan="2"></th>
 
         </tr>
         </thead>
         <tbody id="rowContainer"></tbody>
 
     </table>
+    <nav aria-label="Page navigation">
+        <ul class="pagination" id="pagination2"></ul>
+    </nav>
     <script id="rowTable" type="text/x-jQuery-tmpl">
             <tr  {{if is_red==1 && resolved==1}} class="red"   {{/if}}  {{if  resolved==1}} class="green"   {{/if}} style="border:1px solid #000">
                  <td>${las_seen}</td>
@@ -125,16 +127,17 @@
                     {{/if}}
   <a class="setRevId" onclick="setRevId(${id},'${rev_id}');" title="Set Rev ID"><span class="glyphicon glyphicon-pencil"></span></a>
                 </td>
-                 <td>${bug_type}</td>
+                 <td align="center"><a href="?typeCode=${bug_type}" Title="Filtred by ${bug_type}">${bug_type}</a></td>
+                 <td align="left"><a href="?bug_users=${bug_users}" Title="Filtred by ${bug_users}">${bug_users}</a></td>
                  <td align="center">${bugs_cnt}</td>
-                 <td>${last_host}</td>
-                 <td>${resolved_date}</td>
+                 <td><a href="?host=${last_host}" Title="Filtred by ${last_host}">${last_host}</a></td>
+
                  <td align="rigth" >
                   {{if resolved==0 }}
                         <a class="btn isResolve" onclick="isResolved(${id});">Is Resolved</a>
                     {{/if}}
                      {{if resolved==1 }}
-                         Resolved!
+                         Resolved!  <div>${resolved_date}</div>
                     {{/if}}
                  </td>
                  <td>
@@ -144,8 +147,8 @@
              </tr>
              <tr  {{if is_red==1 && resolved==1}} class="red"   {{/if}}  {{if  resolved==1}} class="green"   {{/if}}  style="font-size:10px">
                 <td colspan="8">
-                <div>Module: ${bug_name} </div>
-
+                <div>Module: <a href="?bug_name=${bug_name}" Title="Filtred by ${bug_name}">${bug_name}</a> </div>
+by
                  <pre style="font-size:10px; " {{if  resolved==1}} class="green"   {{/if}}   id="error_${id}">
                   ${error_text}
 <div style="float:right"><a href="#" onClick="showFull(${id});return false;" >Show Full Error</a></div>
@@ -183,13 +186,16 @@
         </div>
     </div>
 </div>
+<div id="showLoad" style="display: hidden;   position: fixed;bottom: -15px;width: 100%; text-align: center "   class="alert alert-info">
+        <strong>Info!</strong> Loading info.
+    </div>
 <script>
 
 var pages=1;
 function saveRevId() {
     var rev_id=$('#rev_id_save').val();
     var id=$('#save_rev_id').val();
-    $.get("?op=is-set-rev&json=1&id=" + id+'&rev_id='+rev_id, function (data) {
+    $.get("?op=is-set-rev&json=1&id=" + id+'&rev_id_save='+rev_id, function (data) {
         LoadTabe(pages);
         $('#saveModal').modal('hide');
     });
@@ -215,7 +221,7 @@ function setRevId(id,rev_id) {
 
     }
 function ShowPages(pagesTotal){
-    $('#pagination').twbsPagination({
+    $('#pagination,#pagination2').twbsPagination({
         totalPages: pagesTotal,
         visiblePages: 7,
         onPageClick: function (event, page) {
@@ -233,7 +239,8 @@ function LoadTabe(page){
         .done(function (json) {
             $('#paging_info').html('Total:' + json.recordsFiltered);
             $("#rowTable").tmpl(json.data).appendTo("#rowContainer");
-          if (json.TotalPages){
+            $('#showLoad').hide();
+          if (json.TotalPages ){
               ShowPages(json.TotalPages);
           }
 
@@ -246,7 +253,17 @@ function LoadTabe(page){
     $(document).ready(function () {
 
         LoadTabe(1);
+        $(window).scroll(function() { //detact scroll
+            if($(window).scrollTop() + $(window).height() >= $(document).height()){ //scrolled to bottom of the page
+                //contents(el, settings); //load content chunk
+                $('#showLoad').show();
+                LoadTabe(pages+1 );
+                pages=pages+1
+              // $('#pagination,#pagination2').data('currentPage', pages);
+             //   $('#pagination,#pagination2').twbsPagination('destroy');
 
+            }
+        });
 
     });
 </script>

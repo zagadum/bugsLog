@@ -70,4 +70,11 @@ function DB_error()
 
 }
 
+function DB_AffectedRow()
+{
+    global $conn_DB;
+    return mysqli_affected_rows($conn_DB);
+
+}
+
 ?>

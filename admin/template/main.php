@@ -37,8 +37,8 @@
                             <span class="icon-menu"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                            <!-- <li><a href="#">User History</a></li>
-                            <li><a href="#">Configure</a></li> -->
+                           <li><a href="?op=bugs_filter">Filter</a></li>
+                            <!--  <li><a href="#">Configure</a></li> -->
                             <li><a href="?op=logout" class="text-danger">Logout</a></li>
                         </ul>
                     </div>

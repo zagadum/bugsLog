@@ -44,6 +44,7 @@ class LibLogs
 
         if (isset($_REQUEST['user'])) {
             $fields['fieldsBugsDetails']['user'] = DB_string($_REQUEST['user']);
+            $fieldsBugs['bug_users'] = DB_string($_REQUEST['user']);
         }
         if (isset($_REQUEST['cdn'])) {
             $fields['fieldsBugsDetails']['cdn'] = DB_string($_REQUEST['cdn']);
@@ -94,11 +95,14 @@ class LibLogs
 
         //--- BugName
         if (isset($_REQUEST['module'])) {
-            $BugName = ' ' . $_REQUEST['module'];
+            $BugName =   $_REQUEST['module'];
         }
-        if (isset($_REQUEST['opened_tab'])) {
-            $BugName .= ' ' . $_REQUEST['opened_tab'];
+        if (empty($BugName)){
+            if (isset($_REQUEST['opened_tab'])) {
+                $BugName = $_REQUEST['opened_tab'];
+            }
         }
+
 
         $fieldsBugs['bug_type'] = 'swf';
         if (stripos($fieldsBugs['error_text'], 'source') !== false) {
@@ -107,7 +111,10 @@ class LibLogs
 //--------- Analise Bugs Dictonary begin
         $rowBugs = self::GetBagsRow($bug_hash);
         if (empty($rowBugs['id'])) {
-            $fieldsBugs['bug_name'] = DB_string(trim($BugName));
+            $BugName=trim($BugName);
+            $path_parts= pathinfo($BugName);
+            $BugNameSave=$path_parts['filename'].'.'.$path_parts['extension'];
+            $fieldsBugs['bug_name'] = DB_string($BugNameSave);
             $rowBugs['id'] = self::saveBags($fieldsBugs);
         }
         if (!empty($rowBugs['id'])) {
@@ -130,7 +137,8 @@ class LibLogs
             $rs = db_query($ins_sql);
 
             if (!empty($fieldsBugs['last_host'])) {
-                $ins_sqlHost = 'INSERT IGNORE INTO `bugs_details` (host) VALUES("' . $fieldsBugs['last_host'] . '")';
+                $newHostList=parse_url($fieldsBugs['last_host']);
+                $ins_sqlHost = 'INSERT IGNORE INTO `bugs_host` (host) VALUES("' . $newHostList['host'] . '")';
                 db_query($ins_sqlHost);
             }
         }
@@ -173,28 +181,31 @@ class LibLogs
     }
 
 
-    function Update($orderId, $upFields)
+
+    static function saveFilter($filter = '')
     {
-        /*$fiSet=array();
-        foreach($upFields as $nameFields=>$valFields){
-            $fiSet[]="`$nameFields`='$valFields'";
-        }
-        if ($orderId>0){
-            $upd="Update payment_order SET ".implode(',',$fiSet)." WHERE order_id=$orderId";
-            $rs=db_query($upd);
-
-        }
-        */
-
+        $filter=trim($filter);
+        $ins_sql = 'INSERT INTO `bugs_filter` (rule) VALUES ("'. DB_string($filter) .'")';
+        $rs = db_query($ins_sql);
+        $id_rule=db_last_id($rs);
+        return $id_rule;
     }
 
-    function SetVisit($oder_id)
-    {
-        //$oder_id=(int)$oder_id;
-        //$upd="UPDATE  `payment_order` SET visite_status=1,visite_status_date=NOW() WHERE order_id=".$oder_id.' AND visite_status=0';
-        //db_query($upd);
-    }
+    static function applyOneFilter($id_rule=0){
+        if (empty($id_rule)){
+            return false;
+        }
+        $sql = 'SELECT * FROM `bugs_filter` WHERE id='.$id_rule;
+        $rs = db_query($sql);
+         $rowFilter=db_fetch($rs);
+        $rule=$rowFilter['rule'];
+        if ($rowFilter['id']>0 && !empty($rule)){
+            $sqlMark='UPDATE bugs SET `rule_id`='.$rowFilter['id'].' WHERE error_text LIKE \'%'.$rule.'%\'';
+            $rs=db_query($sqlMark);
+            return DB_AffectedRow();
+        }
 
+    }
 }
 
 ?>
