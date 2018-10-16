@@ -108,12 +108,22 @@ class LibLogs
         if (stripos($fieldsBugs['error_text'], 'source') !== false) {
             $fieldsBugs['bug_type'] = 'php';
         }
+        if (isset($_REQUEST['cdn'])) {
+            if (stripos($fieldsBugs['cdn'], 'pos') !== false) {
+                $fieldsBugs['bug_type'] = 'pos';
+            }
+
+        }
+
 //--------- Analise Bugs Dictonary begin
         $rowBugs = self::GetBagsRow($bug_hash);
         if (empty($rowBugs['id'])) {
             $BugName=trim($BugName);
             $path_parts= pathinfo($BugName);
-            $BugNameSave=$path_parts['filename'].'.'.$path_parts['extension'];
+            $BugNameSave=$path_parts['filename'];
+            if (!empty($path_parts['extension'])){
+                $BugNameSave= $BugNameSave.'.'.$path_parts['extension'];
+            }
             $fieldsBugs['bug_name'] = DB_string($BugNameSave);
             $rowBugs['id'] = self::saveBags($fieldsBugs);
         }
@@ -135,11 +145,16 @@ class LibLogs
         if (!empty($valueSave)) {
             $ins_sql = 'INSERT INTO `bugs_details` (' . implode(',', $fieldsSave) . ') VALUES (' . implode(',', $valueSave) . ')';
             $rs = db_query($ins_sql);
-
+            $las_seen=date('Y-m-d H:i:s');
+            $sqlDate="UPDATE  `bugs` SET las_seen='".$las_seen."' WHERE `bug_hash`='".  $bug_hash . "'";
+            db_query($sqlDate);
             if (!empty($fieldsBugs['last_host'])) {
                 $newHostList=parse_url($fieldsBugs['last_host']);
-                $ins_sqlHost = 'INSERT IGNORE INTO `bugs_host` (host) VALUES("' . $newHostList['host'] . '")';
-                db_query($ins_sqlHost);
+                if (!empty($newHostList['host'])){
+                    $ins_sqlHost = 'INSERT IGNORE INTO `bugs_host` (host) VALUES("' . $newHostList['host'] . '")';
+                    db_query($ins_sqlHost);
+                }
+
             }
         }
         self::SeBagsCount($bug_hash);
@@ -150,7 +165,9 @@ class LibLogs
     {
         $fieldsSave = array();
         $valueSave = array();
+
         if (!empty($fields)) {
+            $fields['las_seen']=date('Y-m-d H:i:s');
             foreach ($fields as $field => $val) {
                 $fieldsSave[] = $field;
                 $valueSave[] = "'" . $val . "'";
@@ -176,7 +193,7 @@ class LibLogs
 
     static function SeBagsCount($bug_hash = '')
     {
-        $upd = 'Update `bugs` SET  `bugs_cnt`=(SELECT count(`bug_id`) from `bugs_details` WHERE `bugs`.id=`bugs_details`.bug_id)  WHERE `bug_hash`=' . "'" . $bug_hash . "'";
+        $upd = 'Update `bugs` SET   `bugs_cnt`=(SELECT count(`bug_id`) from `bugs_details` WHERE `bugs`.id=`bugs_details`.bug_id)  WHERE `bug_hash`=' . "'" . $bug_hash . "'";
         $rs = db_query($upd);
     }
 

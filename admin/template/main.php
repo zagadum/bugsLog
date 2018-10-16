@@ -7,7 +7,8 @@
     <title></title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/select2.min.css" rel="stylesheet">
-
+	<link href="css/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="css/bootstrap-datepicker.min.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet">
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -15,6 +16,15 @@
     <script src="js/datatables-bs/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
     <script src="js/jquery.twbsPagination.min.js" type="text/javascript"></script>
+    <script src="js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+	<script src="js/bootstrap-select.min.js"></script>
+ 
+<style>
+.bootstrap-select>.dropdown-toggle{
+	  height: 44px; font-size: 13px; border: 2px solid #cfd8dc;
+}
+</style>
+
     </head>
 <body>
     <div class="main">
@@ -38,7 +48,7 @@
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                            <li><a href="?op=bugs_filter">Filter</a></li>
-                            <!--  <li><a href="#">Configure</a></li> -->
+                              <li><a href="?op=bugs_system">System</a></li>  
                             <li><a href="?op=logout" class="text-danger">Logout</a></li>
                         </ul>
                     </div>

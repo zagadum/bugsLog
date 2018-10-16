@@ -18,3 +18,27 @@ CREATE TABLE `bugs_host` (
 
 insert ignore bugs_host (host) select last_host  from bugs; 
 
+============
+
+ALTER TABLE `bugs`
+ADD COLUMN `rule_id`  int(11) NULL DEFAULT 0 AFTER `error_text`,
+ADD INDEX (`rule_id`) ,
+ADD INDEX (`rev_id`) ,
+ADD INDEX (`bug_name`) ;
+
+
+CREATE TABLE `bugs_filter` (
+  `id` int(11) NOT NULL,
+  `rule` char(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+ALTER TABLE `bugs`
+ADD COLUMN `bug_users`  varchar(100) NULL AFTER `las_seen`,
+ADD INDEX (`bug_users`) ;
+
+update bugs SET bug_users=(SELECT GROUP_CONCAT(DISTINCT `user`) FROM bugs_details WHERE bugs_details.bug_id=bugs.id)
+
+
+ALTER TABLE `bugs`
+MODIFY COLUMN `bug_type`  enum('php','swf','pos','none') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `bug_name`;
